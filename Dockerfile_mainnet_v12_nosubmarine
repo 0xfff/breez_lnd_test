@@ -1,0 +1,33 @@
+FROM alpine:3.12 AS builder
+RUN apk update
+RUN apk add git go musl-dev make bash
+RUN git clone https://github.com/breez/lnd 
+
+
+
+RUN cd lnd \ 
+	&& git checkout breez-node-v0.12.1-beta 
+
+RUN cd lnd \
+	&& COMMIT=$(git describe --abbrev=40 --dirty)\
+	&& COMMIT_HASH=$(git rev-parse HEAD) \
+	&& PKG=github.com/lightningnetwork/lnd \
+	&& export CGO_ENABLED=0 \
+	&& go build -trimpath -ldflags "-X ${PKG}/build.Commit=${COMMIT} -X ${PKG}/build.CommitHash=${COMMIT_HASH}" -tags=signrpc,chanreservedynamic,routerrpc,walletrpc,chainrpc -o lnd-breez-node-staging ./cmd/lnd \
+	&& go build -trimpath -ldflags "-X ${PKG}/build.Commit=${COMMIT} -X ${PKG}/build.CommitHash=${COMMIT_HASH}" -tags=signrpc,chanreservedynamic,routerrpc,walletrpc,chainrpc -o lncli-breez-node-staging ./cmd/lncli
+
+
+	#&& go build -tags=experimental,invoicesrpc,signrpc,autopilotrpc,experimental,submarineswaprpc,chanreservedynamic,routerrpc,walletrpc,chainrpc ./cmd/lnd/ \
+   	#&& go build -tags=experimental,invoicesrpc,signrpc,autopilotrpc,experimental,submarineswaprpc,chanreservedynamic,routerrpc,walletrpc,chainrpc ./cmd/lncli/
+
+RUN mv /lnd/lnd-breez-node-staging /lnd/lnd
+RUN mv /lnd/lncli-breez-node-staging /lnd/lncli
+
+	#VOLUME /root/.lnd
+EXPOSE 10013 9739 10009 
+
+	#COPY start.sh .
+COPY lnd.conf.mainnet /root/.lnd/lnd.conf
+	#RUN chmod +x ./start.sh
+	#ENTRYPOINT /start.sh
+ENTRYPOINT /bin/bash
