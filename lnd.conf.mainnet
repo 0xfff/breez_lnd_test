@@ -1,0 +1,35 @@
+[Application Options]
+    debuglevel=debug
+    maxlogfiles=3
+    maxlogfilesize=10
+    maxpendingchannels=10
+    externalip=192.168.123.252
+    alias=breez-lqwd-albert
+    tlsextraip=192.168.123.252
+    tlsextradomain=slnd-1223.ln.lqwd.tech
+    tlsextradomain=slnd-1223.lqwd-lnd
+    listen=0.0.0.0:9735
+    restlisten=0.0.0.0:8080
+    rpclisten=0.0.0.0:10009
+	#blockcachesize=41943040
+    feeurl=https://nodes.lightning.computer/fees/v1/btc-fee-estimates.json
+    #The number of peers that we should receive new graph updates from. This option
+    #can be tuned to save bandwidth for light clients or routing nodes. (default: 3)
+    numgraphsyncpeers=3
+
+    #The color of the node in hex format, used to customize node appearance in
+    #intelligence services.
+    color=#3399FF
+[Bitcoin]
+     bitcoin.active=1
+     bitcoin.mainnet=1
+     bitcoin.node=neutrino
+     bitcoin.defaultchanconfs=3
+[autopilot]
+    autopilot.active=false
+    autopilot.maxchannels=16
+    autopilot.allocation=0.1
+[Watchtower]
+    watchtower.active=false
+[Neutrino]
+    neutrino.connect=bb2.breez.technology
