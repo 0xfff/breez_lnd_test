@@ -40,3 +40,15 @@ now the terminal running LND should report the error
 `unable to create RPC server: failed to read root key ID from context`  
 
 
+###Test 2   
+removed the `submarineswaprpc` tag from Dockerfile
+removed the image
+removed the volume
+rebuilt the image
+ran the container as usual
+unlocked the wallet with the same seed phrase
+`lncli getinfo` successful
+02e45a4a6952406edf46b16034a4d33bc83e5c5ee6c68661fda2f4f8063c8a346c@192.168.123.252:9735
+
+**runs great, no error**  
+
